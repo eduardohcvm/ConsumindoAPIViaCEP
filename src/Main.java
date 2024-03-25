@@ -1,4 +1,12 @@
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -9,8 +17,16 @@ public class Main {
         Scanner leitura = new Scanner(System.in);
         System.out.println("Digite o CEP do endereço que gostaria encontrar:");
         String CEP = leitura.nextLine();
-        fazerConexao endereco = new fazerConexao();
-        endereco.fazerConexao(CEP);
-        
+        String endereco ="viacep.com.br/ws/" + CEP + "/json/";
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).setPrettyPrinting().create();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endereco))
+                .build();
+        HttpResponse<String> response = client
+                .send(request, HttpResponse.BodyHandlers.ofString());
+        String json = response.body();
+        Endereco meuEndereco = gson.fromJson(json, Endereco.class);
+        System.out.println(meuEndereco);
     }
 }
