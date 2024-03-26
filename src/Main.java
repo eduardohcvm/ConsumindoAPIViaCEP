@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -17,7 +18,8 @@ public class Main {
         Scanner leitura = new Scanner(System.in);
         System.out.println("Digite o CEP do endereço que gostaria encontrar:");
         String CEP = leitura.nextLine();
-        String endereco ="viacep.com.br/ws/" + CEP + "/json/";
+        String endereco = "https://viacep.com.br/ws/" + CEP + "/json/";
+
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).setPrettyPrinting().create();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -26,7 +28,13 @@ public class Main {
         HttpResponse<String> response = client
                 .send(request, HttpResponse.BodyHandlers.ofString());
         String json = response.body();
+
+        System.out.println(json);
+
         Endereco meuEndereco = gson.fromJson(json, Endereco.class);
-        System.out.println(meuEndereco);
+
+        System.out.println(meuEndereco.getLogradouro());
+
+
     }
 }

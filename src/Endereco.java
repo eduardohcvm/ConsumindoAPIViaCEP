@@ -1,27 +1,45 @@
-public class Endereco {
+import com.google.gson.annotations.SerializedName;
+
+public class Endereco implements Comparable<Endereco> {
+    @SerializedName("cep")
     private String cep;
+    @SerializedName("logradouro")
     private String logradouro;
     private String complemento;
     private String bairro;
+
+    @SerializedName("localidade")
     private String cidade;
     private String uf;
     private int gia;
-    private String ddd;
+    private int ddd;
     private int siafi;
 
     public int getSiafi() {
         return siafi;
+    }
+    public Endereco(EnderecoViaCep meuEnderecoViaCEP){
+        this.bairro = meuEnderecoViaCEP.bairro();
+        this.ddd = meuEnderecoViaCEP.ddd();
+        this.cep = meuEnderecoViaCEP.cep();
+        this.gia = meuEnderecoViaCEP.gia();
+        this.cidade = meuEnderecoViaCEP.localidade();
+        this.bairro = meuEnderecoViaCEP.bairro();
+        this.complemento = meuEnderecoViaCEP.complemento();
+        this.logradouro = meuEnderecoViaCEP.logradouro();
+        this.siafi = meuEnderecoViaCEP.siafi();
+        this.uf = meuEnderecoViaCEP.uf();
     }
 
     public void setSiafi(int siafi) {
         this.siafi = siafi;
     }
 
-    public String getDdd() {
+    public int getDdd() {
         return ddd;
     }
 
-    public void setDdd(String ddd) {
+    public void setDdd(int ddd) {
         this.ddd = ddd;
     }
 
@@ -79,5 +97,10 @@ public class Endereco {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    @Override
+    public int compareTo(Endereco o) {
+        return 0;
     }
 }
